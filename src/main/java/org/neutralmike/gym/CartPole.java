@@ -17,7 +17,6 @@ public class CartPole {
     double theta;
     double thetaDot;
 
-    int[] state;
     double reward;
     int stepsBeyondDone = -1;
     boolean done;
@@ -37,7 +36,6 @@ public class CartPole {
         xDot = xDot + tau * xacc;
         theta = theta + tau * thetaDot;
         thetaDot = thetaDot + tau * thetaacc;
-        updateState();
         done = (
                 x < -xThreshold
                         || x > xThreshold
@@ -60,14 +58,8 @@ public class CartPole {
         xDot = Math.random() * 0.1 - 0.05;
         theta = Math.random() * 0.1 - 0.05;
         thetaDot = Math.random() * 0.1 - 0.05;
-        updateState();
         stepsBeyondDone = -1;
         done = false;
-    }
-
-    void updateState()
-    {
-        state = new int[] {discretize(x, xThreshold), discretize(xDot, 2*xThreshold), discretize(theta, thetaThresholdRadians), discretize(thetaDot, 2*thetaThresholdRadians)};
     }
 
     int discretize(double val,double threshold)
@@ -75,8 +67,11 @@ public class CartPole {
         return (int) (12 * (val)/(threshold));
     }
 
-    public int[] getState() {
-        return state;
+    public double[] getState() {
+        return new double[] {x,xDot,theta,thetaDot};
+    }
+    public int[] getDesretizedState() {
+        return new int[] {discretize(x, xThreshold), discretize(xDot, 2*xThreshold), discretize(theta, thetaThresholdRadians), discretize(thetaDot, 2*thetaThresholdRadians)};
     }
 
     public double getReward() {

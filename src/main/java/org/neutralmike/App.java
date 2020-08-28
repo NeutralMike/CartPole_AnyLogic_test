@@ -15,21 +15,14 @@ public class App
         Graph tfGraph = new Graph();
         Session tfSession = new Session(tfGraph);
         CartPole TestCart = new CartPole();
-        Operation QTable = tfGraph.onBuilder("Const", "QTable")
-                .setAttr("shape", Tensor.create(new int[] {25, 2}))
-                .build();
-        Operation defQ = graph.opBuilder("Mul", "defQ")
-                .addInput(a.output(0))
-                .addInput(x.output(0))
-                .build();
         for (int j = 0; j<50; j++)
         {
-            Q = (1 -learning_rate(i));
+//            Q = (1 -learning_rate(i));
             TestCart.Reset();
             int stepId = 0;
             while(!TestCart.isDone())
             {
-                int action = Policy(TestCart.getState());
+                int action = Policy(TestCart.getDesretizedState());
                 TestCart.Step(action);
                 stepId++;
             }
