@@ -1,36 +1,36 @@
 package org.neutralmike.gym;
 
 public class CartPole {
-    double gravity = 9.8;
-    double masscart = 1.0;
-    double masspole = 0.1;
-    double totalMass = masscart + masspole;
-    double length = 0.5;
-    double polemassLength = masspole * length;
-    double forceMag = 10.0;
-    double tau = 0.02;
-    double thetaThresholdRadians = 12 * 2 * Math.PI / 360;
-    double xThreshold = 2.4;
+    float gravity = 9.8f;
+    float masscart = 1.0f;
+    float masspole = 0.1f;
+    float totalMass = masscart + masspole;
+    float length = 0.5f;
+    float polemassLength = masspole * length;
+    float forceMag = 10.0f;
+    float tau = 0.02f;
+    float thetaThresholdRadians = 12 * 2 * (float) Math.PI / 360;
+    float xThreshold = 2.4f;
 
-    double x;
-    double xDot;
-    double theta;
-    double thetaDot;
+    float x;
+    float xDot;
+    float theta;
+    float thetaDot;
 
-    double reward;
+    float reward;
     int stepsBeyondDone = -1;
     boolean done;
 
     public void Step(int action) {
-        double force = forceMag;
+        float force = forceMag;
         if (action == 0) {
             force = -force;
         }
-        double cosTheta = Math.cos(theta);
-        double sinTheta = Math.sin(theta);
-        double temp = (force + polemassLength * Math.pow(thetaDot, 2) * sinTheta) / totalMass;
-        double thetaacc = (gravity * sinTheta - cosTheta * temp) / (length * (4.0 / 3.0 - masspole * Math.pow(cosTheta,2) / totalMass));
-        double xacc = temp - polemassLength * thetaacc * cosTheta / totalMass;
+        float cosTheta = (float) Math.cos(theta);
+        float sinTheta = (float) Math.sin(theta);
+        float temp = (force + polemassLength * (float) Math.pow(thetaDot, 2) * sinTheta) / totalMass;
+        float thetaacc = (gravity * sinTheta - cosTheta * temp) / (length * (4.0f / 3.0f - masspole * (float) Math.pow(cosTheta,2) / totalMass));
+        float xacc = temp - polemassLength * thetaacc * cosTheta / totalMass;
 
         x = x + tau * xDot;
         xDot = xDot + tau * xacc;
@@ -42,33 +42,33 @@ public class CartPole {
                         || theta < -thetaThresholdRadians
                         || theta > thetaThresholdRadians
         );
-        if (!done) reward = 1.0;
+        if (!done) reward = 1.0f;
         else if(stepsBeyondDone == -1) {
             stepsBeyondDone = 0;
-            reward = 1.0;
+            reward = 1.0f;
         }
         else {
             stepsBeyondDone += 1;
-            reward = 0.0;
+            reward = 0.0f;
         }
     }
 
     public void Reset() {
-        x = Math.random() * 0.1 - 0.05;
-        xDot = Math.random() * 0.1 - 0.05;
-        theta = Math.random() * 0.1 - 0.05;
-        thetaDot = Math.random() * 0.1 - 0.05;
+        x = (float) Math.random() * 0.1f - 0.05f;
+        xDot = (float) Math.random() * 0.1f - 0.05f;
+        theta = (float) Math.random() * 0.1f - 0.05f;
+        thetaDot = (float) Math.random() * 0.1f - 0.05f;
         stepsBeyondDone = -1;
         done = false;
     }
 
-    int discretize(double val,double threshold)
+    int discretize(float val,float threshold)
     {
-        return (int) (12 * (val)/(threshold));
+        return (int) (24 * (val+threshold)/(2*threshold));
     }
 
-    public double[] getState() {
-        return new double[] {x,xDot,theta,thetaDot};
+    public float[] getState() {
+        return new float[] {x,xDot,theta,thetaDot};
     }
     public int[] getDesretizedState() {
         return new int[] {discretize(x, xThreshold), discretize(xDot, 2*xThreshold), discretize(theta, thetaThresholdRadians), discretize(thetaDot, 2*thetaThresholdRadians)};
