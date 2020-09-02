@@ -130,5 +130,4 @@ while True:  # Run until solved
         print("Solved at episode {}!".format(episode_count))
         break
 
-model.save('../src/main/resources/Qmodel')
-
+model.save('../src/main/resources/ActorCriticModel')
