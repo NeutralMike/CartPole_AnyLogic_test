@@ -62,16 +62,8 @@ public class CartPole {
         done = false;
     }
 
-    int discretize(float val,float threshold)
-    {
-        return (int) (24 * (val+threshold)/(2*threshold));
-    }
-
     public float[] getState() {
         return new float[] {x,xDot,theta,thetaDot};
-    }
-    public int[] getDesretizedState() {
-        return new int[] {discretize(x, xThreshold), discretize(xDot, 2*xThreshold), discretize(theta, thetaThresholdRadians), discretize(thetaDot, 2*thetaThresholdRadians)};
     }
 
     public double getReward() {
