@@ -7,8 +7,8 @@ env = gateway.entry_point.getCartPole()
 
 max_episodes = 10000
 max_steps_per_episode = 1000
-reward_threshold = 195
-running_reward = 0
+reward_threshold = 195  # when running reward episodes more then 195
+running_reward = 0  # 1/100 of sum last 100 episodes reward
 
 num_inputs = 4
 num_actions = 2
@@ -20,10 +20,10 @@ for episode_i in range(1, max_episodes+1):
 
     for step_i in range(max_steps_per_episode):
         state = np.array(env.getState())
-        prediction = agent.predict([state])[0]
+        prediction = agent.predict([state])[0]  # array of predicted discounted rewards for each available action
         action = np.argmax(prediction)
 
-        if np.random.rand() <= 0.1:
+        if np.random.rand() <= 0.1:  # 10% of actions is actually random, to prevent overtraining and explore another ways
             action = np.random.randint(0, num_actions)
 
         env.Step(int(action))
@@ -41,8 +41,9 @@ for episode_i in range(1, max_episodes+1):
 
     agent.retrain()
 
-    if (episode_i) % 10 == 0:
-        print('running reward: {:.2f} at episode {}'.format(running_reward, episode_i))
     if running_reward > reward_threshold:
         print('running reward: {:.2f} at episode {}'.format(running_reward, episode_i))
         break
+    else:
+        if episode_i % 10 == 0:
+            print('running reward: {:.2f} at episode {}'.format(running_reward, episode_i))

@@ -13,7 +13,7 @@ class Agent:
         self.lr = lr
         self.num_actions = num_actions
         self.num_inputs = num_inputs
-
+        # Create deep Q network
         inputs = layers.Input(shape=(num_inputs,))
         hidden_1 = layers.Dense(num_hidden, activation="relu")(inputs)
         hidden_2 = layers.Dense(num_hidden)(hidden_1)
@@ -36,7 +36,7 @@ class Agent:
         return self.dqn.predict(np.reshape(np.array(states), (-1, self.num_inputs)))
 
     def retrain(self):
-        #Q(s_t, a_t) = r_t + gamma * (max_a'(Q(s_t+1, a'))
+        # Q(s_t, a_t) = r_t + gamma * (max_a'(Q(s_t+1, a'))
         amax_predictoins = np.amax(self.predict([self.states]), axis=1)
         for i in range(len(self.states)-2, -1, -1):
             self.targets[i][self.actions[i]] += self.gamma * amax_predictoins[i+1]
