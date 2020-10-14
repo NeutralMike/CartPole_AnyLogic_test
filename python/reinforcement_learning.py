@@ -38,7 +38,7 @@ for episode_i in range(1, max_episodes+1):
             break
 
     running_reward = episode_reward * 0.01 + running_reward * .99
-
+z
     agent.retrain()
 
     if (episode_i) % 10 == 0:

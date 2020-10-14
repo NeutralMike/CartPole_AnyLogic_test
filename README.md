@@ -17,7 +17,7 @@ mvn install
 pip install -r python/requirements.txt
 
 <h1>Run</h1>
-<h4>Use created model on Java</h4>
+<h4>Start Java env</h4>
 mvn clean compile exec:java
 <h4>Create and train new model on python</h4>
-python python/create_RL_model.py
+python python/reinforcement_learning.py
