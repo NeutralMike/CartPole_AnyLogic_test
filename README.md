@@ -19,7 +19,7 @@ mvn clean compile exec:java
 <h4>Create and train new model on python</h4>
 python python/reinforcement_learning.py
 
-![cartpole](readme_images/cart_pole.gif)
+![cartpole](readme_images/cart-pole.gif)
 
 ![results](readme_images/results.png)
 
